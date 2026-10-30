@@ -28,19 +28,21 @@ export default function Footer() {
   return (
     <footer className="border-t border-slate-800 bg-slate-950 text-slate-300">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        
+
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-          
+
           {/* 1. Branding & Mission Statement */}
           <div className="flex flex-col gap-4">
-            <Link href="/" className="flex items-center gap-2">
-              <Aperture className="h-7 w-7 text-[#00A8E8]" />
-              <span className="text-xl font-bold tracking-tight text-white">
-                StudioSpace
+            <Link href="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-90">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 shadow-sm backdrop-blur-sm">
+                <Aperture className="h-7 w-7 text-[#00A8E8]" />
+              </div>
+              <span className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-[#00A8E8] via-sky-400 to-cyan-300 bg-clip-text text-transparent">
+                CreativeNest
               </span>
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed">
-              StudioSpace is a high-performance peer-to-peer marketplace designed for creators, filmmakers, photographers, podcasters, and musicians. We connect visionary creators with the perfect creative spaces.
+              CreativeNest is a high-performance peer-to-peer marketplace designed for creators, filmmakers, photographers, podcasters, and musicians. We connect visionary creators with the perfect creative spaces.
             </p>
           </div>
 
@@ -101,11 +103,11 @@ export default function Footer() {
 
         {/* Bottom Section: Copyright, Terms & Socials */}
         <div className="mt-12 flex flex-col items-center justify-between gap-6 border-t border-slate-800 pt-8 sm:flex-row">
-          
+
           {/* Copyright & Terms */}
           <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-4">
             <p className="text-xs text-slate-500">
-              &copy; {currentYear} StudioSpace Inc. All rights reserved.
+              &copy; {currentYear} CreativeNest Inc. All rights reserved.
             </p>
             <div className="flex items-center gap-4 text-xs text-slate-500">
               <Link href="/terms" className="hover:text-[#00A8E8] transition-colors">

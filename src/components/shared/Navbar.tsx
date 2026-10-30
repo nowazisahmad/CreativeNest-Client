@@ -34,30 +34,36 @@ function NavbarContent(): ReactElement {
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
 
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2">
-            <Aperture className="h-7 w-7 text-[#00A8E8]" />
-            <span className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-              StudioSpace
+          <Link href="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-90">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#00A8E8]/30 bg-[#00A8E8]/10 shadow-sm">
+              <Aperture className="h-7 w-7 text-[#00A8E8]" />
+            </div>
+            <span className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-[#00A8E8] via-sky-500 to-blue-600 bg-clip-text text-transparent">
+              CreativeNest
             </span>
           </Link>
         </div>
 
         <ul className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className={cn(
-                  "text-sm transition-colors hover:text-[#00A8E8]",
-                  pathname === link.href
-                    ? "font-medium text-[#00A8E8]"
-                    : "text-muted-foreground",
-                )}
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className={cn(
+                    "relative py-1 text-sm font-medium transition-colors hover:text-[#00A8E8]",
+                    isActive ? "text-[#00A8E8]" : "text-muted-foreground"
+                  )}
+                >
+                  {link.label}
+                  {isActive && (
+                    <span className="absolute -bottom-1 left-0 right-0 h-0.5 rounded-full bg-[#00A8E8]" />
+                  )}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
         <div className="flex items-center gap-4">
@@ -79,7 +85,7 @@ function NavbarContent(): ReactElement {
                   "bg-[#00A8E8]"
                 )}
               >
-                Sign Up
+                Register
               </Link>
             </>
           ) : (
