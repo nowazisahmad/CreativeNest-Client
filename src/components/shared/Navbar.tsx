@@ -38,7 +38,7 @@ function NavbarContent(): ReactElement {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#00A8E8]/30 bg-[#00A8E8]/10 shadow-sm">
               <Aperture className="h-7 w-7 text-[#00A8E8]" />
             </div>
-            <span className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-[#00A8E8] via-sky-500 to-blue-600 bg-clip-text text-transparent">
+            <span className="text-xl font-extrabold tracking-tight bg-linear-to-r from-[#00A8E8] via-sky-500 to-blue-600 bg-clip-text text-transparent">
               CreativeNest
             </span>
           </Link>

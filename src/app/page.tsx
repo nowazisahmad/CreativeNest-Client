@@ -2,6 +2,7 @@ import FeaturedStudios from "@/components/home/Featured-Studios";
 import HeroSlider from "@/components/home/HeroSlider";
 import CategorySection from "@/components/home/CategorySection";
 import HowItWorks from "@/components/home/HowItWorks";
+import HostGuarantee from "@/components/home/HostGuarantee";
 
 export default function Page() {
   return (
@@ -10,6 +11,7 @@ export default function Page() {
       <FeaturedStudios/>
       <CategorySection/>
       <HowItWorks/>
+      <HostGuarantee/>
     </div>
   );
 }
