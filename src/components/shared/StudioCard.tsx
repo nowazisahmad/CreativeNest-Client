@@ -10,7 +10,7 @@ const StudioCard = ({ studio }: {studio: IStudio }) => {
       
       <div className="relative h-48 w-full overflow-hidden bg-muted">
         <Image
-          src={studio.imageUrl || "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=800&auto=format&fit=crop"}
+          src={studio?.imageUrl}
           alt={studio.title}
           fill
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"

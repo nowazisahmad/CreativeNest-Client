@@ -3,38 +3,32 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { PlusCircle, MapPin, Edit, Trash2, Loader2, AlertTriangle } from "lucide-react";
+import { PlusCircle, MapPin, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
-import { IStudio } from "@/lib/types/Studio";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import Image from "next/image";
+import DeleteStudioDialog from "@/components/Studios/DeleteStudiosDialog";
+import EditStudioDialog from "@/components/Studios/EditStudiosDialog";
 
 export default function MyStudioListingsPage() {
   const router = useRouter();
   const { data: session, isPending: sessionLoading } = authClient.useSession();
-  
-  const [studios, setStudios] = useState<IStudio[]>([]);
+  const [studios, setStudios] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (sessionLoading) return;
 
     const fetchMyStudios = async () => {
+      if (!session?.user?.email) {
+        router.push("/login");
+        return;
+      }
+      
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/my-studios?email=${session?.user?.email}`
+          `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/my-studios?email=${session.user.email}`
         );
         if (res.ok) {
           const data = await res.json();
@@ -43,38 +37,12 @@ export default function MyStudioListingsPage() {
       } catch (error) {
         toast.error("Failed to load your studios.");
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
     fetchMyStudios();
   }, [session, sessionLoading, router]);
-
-  const handleDelete = async () => {
-    if (!deleteId) return;
-    setIsDeleting(true);
-    const toastId = toast.loading("Deleting studio...");
-
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/studios/${deleteId}`,
-        { method: "DELETE" }
-      );
-
-      if (res.ok) {
-        toast.success("Studio deleted successfully!", { id: toastId });
-        setStudios((prev) => prev.filter((s) => s._id !== deleteId));
-        setDeleteId(null); 
-        router.refresh();
-      } else {
-        toast.error("Failed to delete studio.", { id: toastId });
-      }
-    } catch (error) {
-      toast.error("Something went wrong.", { id: toastId });
-    } finally {
-      setIsDeleting(false);
-    }
-  };
 
   if (sessionLoading || loading) {
     return (
@@ -113,15 +81,16 @@ export default function MyStudioListingsPage() {
             {studios.map((studio) => (
               <div 
                 key={studio._id} 
-                className="flex flex-col sm:flex-row items-center gap-4 rounded-xl border bg-white p-4 shadow-sm relative"
+                className="flex flex-col sm:flex-row items-center gap-4 rounded-xl border bg-white p-4 shadow-sm"
               >
-                <Image
-                  src={studio?.imageUrl}
-                  alt={studio.title}
-                  width={128}
-                  height={96}
-                  className="h-24 w-full sm:w-32 rounded-lg object-cover"
-                />
+                <div className="relative h-24 w-full sm:w-32 shrink-0 overflow-hidden rounded-lg">
+                  <Image
+                    src={studio?.imageUrl}
+                    alt={studio.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
                 
                 <div className="flex-1 w-full">
                   <div className="flex items-center gap-2 mb-1">
@@ -143,50 +112,9 @@ export default function MyStudioListingsPage() {
                   </div>
                   
                   <div className="flex gap-2">
-                    <Link href={`/studios/edit/${studio._id}`}>
-                      <Button variant="outline" size="sm" className="h-8 px-2 text-muted-foreground">
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                    </Link>
-
-                    <Dialog open={deleteId === studio._id} onOpenChange={(open) => !open && setDeleteId(null)}>
-                      <DialogTrigger 
-  render={
-    <Button
-      variant="outline"
-      size="sm"
-      onClick={() => setDeleteId(studio._id)}
-      className="h-8 px-2 text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
-    >
-      <Trash2 className="h-4 w-4" />
-    </Button>
-  }
-/>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle className="flex items-center gap-2">
-                            <AlertTriangle className="h-5 w-5 text-red-500" />
-                            Delete Studio
-                          </DialogTitle>
-                          <DialogDescription>
-                            Are you sure you want to delete <strong>{studio.title}</strong>? This action cannot be undone and will remove all associated data.
-                          </DialogDescription>
-                        </DialogHeader>
-                        <DialogFooter>
-                          <Button variant="outline" onClick={() => setDeleteId(null)}>
-                            Cancel
-                          </Button>
-                          <Button 
-                            variant="destructive" 
-                            onClick={handleDelete} 
-                            disabled={isDeleting}
-                          >
-                            {isDeleting ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                            Delete
-                          </Button>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
+                    <EditStudioDialog studio={studio} />
+                    
+                    <DeleteStudioDialog id={studio._id} />
                   </div>
                 </div>
               </div>
