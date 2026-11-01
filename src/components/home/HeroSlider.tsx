@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, EffectFade, Navigation } from "swiper/modules";
@@ -12,6 +12,7 @@ import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import { ISlide } from "@/lib/types/Slider";
+import Image from "next/image";
 
 
 const slides: ISlide[] = [
@@ -74,16 +75,12 @@ const slides: ISlide[] = [
   },
 ];
 
-export default function HeroSlider() {
+const HeroSlider = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [swiperRef, setSwiperRef] = useState<SwiperType | null>(null);
-  const [isReady, setIsReady] = useState(false);
+  const [isReady] = useState(false);
 
   const currentSlide = slides[activeIndex];
-
-  useEffect(() => {
-    setIsReady(true);
-  }, []);
 
   const handlePrev = useCallback(() => {
     swiperRef?.slidePrev();
@@ -111,9 +108,10 @@ export default function HeroSlider() {
           <SwiperSlide key={slide.id}>
             {/* Background Image */}
             <div className="absolute inset-0">
-              <img
+              <Image
                 src={slide.bgImage}
                 alt=""
+                fill
                 className="h-full w-full object-cover"
                 loading={slide.id === 1 ? "eager" : "lazy"}
               />
@@ -245,3 +243,4 @@ export default function HeroSlider() {
   );
 }
 
+export default HeroSlider;

@@ -32,7 +32,7 @@ const initialForm = {
   description: "",
 };
 
-export default function AddStudioPage() {
+const AddStudioPage = () => {
   const router = useRouter();
   const { data: session } = authClient.useSession(); 
   const [form, setForm] = useState(initialForm);
@@ -153,7 +153,6 @@ export default function AddStudioPage() {
                 <SelectTrigger className="w-full border-white/20 bg-white/5 text-white focus:ring-[#00A8E8]">
                   <SelectValue placeholder="Select a category" className="text-white/50" />
                 </SelectTrigger>
-                {/* Dropdown Content ডার্ক থিমের জন্য */}
                 <SelectContent className="border-white/20 bg-slate-900/90 backdrop-blur-xl text-white">
                   {categories.map((category) => (
                     <SelectItem key={category} value={category} className="focus:bg-white/10 focus:text-white">
@@ -293,4 +292,6 @@ export default function AddStudioPage() {
       </div>
     </main>
   );
-}
+};
+
+export default AddStudioPage;
