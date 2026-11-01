@@ -17,7 +17,7 @@ export default function ExploreStudiosPage() {
   useEffect(() => {
     const fetchStudios = async () => {
       try {
-        const res = await fetch("http://localhost:5000/studios");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/studios`);
         if (!res.ok) throw new Error("Failed to fetch studios");
         const data = await res.json();
         setStudios(data);
